@@ -18,16 +18,16 @@ score_requirement = 50
 initial_games = 10000
 
 def some_random_games_first():
-    for episode in xrange(5):
+    for episode in range(5):
         env.reset()
-        for t in xrange(goal_steps):
+        for t in range(goal_steps):
             env.render()
             action = env.action_space.sample()
             observation, reward, done, info = env.step(action)
             if done:
                 break
 
-#some_random_games_first()
+# some_random_games_first()
 
 def initial_population():
     training_data = []
@@ -99,13 +99,13 @@ def train_model(training_data, model=False):
     model.fit({'input':X}, {'targets':Y}, n_epoch=5, snapshot_step=500, show_metric=True, run_id='openaistuff')
     return model
 
-#training_data = initial_population()
+training_data = initial_population()
 training_data = np.load(open('saved.npy'))
-#model = train_model(training_data)
-#model.save('Saved.model')
-X = np.array([i[0] for i in training_data]).reshape(-1, len(training_data[0][0]), 1)
-model = neural_network_model(input_size = len(X[0]))
-model.load('Saved.model')
+model = train_model(training_data)
+model.save('Saved.model')
+# X = np.array([i[0] for i in training_data]).reshape(-1, len(training_data[0][0]), 1)
+# model = neural_network_model(input_size = len(X[0]))
+# model.load('Saved.model')
 
 scores = []
 choices = []
