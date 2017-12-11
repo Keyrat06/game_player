@@ -21,9 +21,6 @@ HIDDENS = [10, 10]
 GOAL_STEPS = 500
 GENERATIONS = 100
 
-env = gym.make('BipedalWalker-v2')
-# env = gym.make('CartPole-v1')
-env.reset()
 
 def some_random_games_first():
     for episode in range(5):
@@ -156,12 +153,17 @@ def train(population, net_type = Genetic_Net_discrete):
         population = reproduce(survivors, survivors_scores, net_type=net_type)
         play_game(population[np.argmax(scores)], True, steps=1000)
 
-##### For Bipedal Walk
-population = get_initial_population(POPULATION_SIZE, INPUT_SIZE, HIDDENS, OUTPUT_SIZE, net_type=Genetic_Net_continous)
-population = train(population, net_type=Genetic_Net_continous)
 
-##### For Cart Pole
-# population = get_initial_population(POPULATION_SIZE, INPUT_SIZE, HIDDENS, OUTPUT_SIZE, net_type=Genetic_Net_discrete)
-# population = train(population, net_type=Genetic_Net_discrete)
+if __name__ == "__main__":
+    env = gym.make('BipedalWalker-v2')
+    # env = gym.make('CartPole-v1')
+    env.reset()
+    ##### For Bipedal Walk
+    population = get_initial_population(POPULATION_SIZE, INPUT_SIZE, HIDDENS, OUTPUT_SIZE, net_type=Genetic_Net_continous)
+    population = train(population, net_type=Genetic_Net_continous)
+
+    ##### For Cart Pole
+    # population = get_initial_population(POPULATION_SIZE, INPUT_SIZE, HIDDENS, OUTPUT_SIZE, net_type=Genetic_Net_discrete)
+    # population = train(population, net_type=Genetic_Net_discrete)
 
 
