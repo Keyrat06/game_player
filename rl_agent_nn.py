@@ -54,7 +54,7 @@ with tf.Session() as sess:
             #Obtain maxQ' and set our target value for chosen action.
             maxQ1 = np.max(Q1)
             targetQ = allQ
-            targetQ[0,a[0]] = r + y*maxQ1
+            targetQ[0,a[0]] = r + y*maxQ1 - 0.000001*j
             #Train our network using target and predicted Q values
             _,W1 = sess.run([updateModel,W],feed_dict={inputs1:np.identity(16)[s:s+1],nextQ:targetQ})
             rAll += r
@@ -63,10 +63,34 @@ with tf.Session() as sess:
                 #Reduce chance of random action as we train the model.
                 e = 1./((i/50) + 10)
                 break
-        jList.append(j)
+        jList.append(j * rAll)
         rList.append(rAll)
-print "Percent of succesful episodes: " + str(sum(rList)/num_episodes) + "%"
 
-plt.plot(rList)
-plt.plot(jList)
-plt.show()
+def smooth(list, a = 0.01):
+    new_list = []
+    v = list[0]
+    for item in list:
+        v = v*(1-a) + a*item
+        new_list.append(v)
+    return new_list
+
+# print "Percent of succesful episodes: " + str(sum(rList)/num_episodes) + "%"
+
+# plt.subplot(1, 2, 1)
+plt.title("Smoothed Normalized Games Rewards Reinforcement Network")
+plt.plot(smooth(rList))
+plt.ylabel("Smoothed Game Rewards")
+plt.xlabel("Epoch")
+# plt.subplot(1, 2, 2)
+# plt.title("Smoothed Time To Completion")
+# plt.plot(smooth(jList))
+# plt.ylabel("Time To Completion")
+# plt.xlabel("Epoch")
+#
+#
+# plt.subplots_adjust(hspace=0.3)
+#
+
+plt.show("hold")
+
+# plt.show()

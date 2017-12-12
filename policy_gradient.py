@@ -51,18 +51,26 @@ tf.reset_default_graph() #Clear the Tensorflow graph.
 
 myAgent = agent(lr=1e-2,s_size=4,a_size=2,h_size=8) #Load the agent.
 
-total_episodes = 5000 #Set total number of episodes to train agent on.
+total_episodes = 2500 #Set total number of episodes to train agent on.
 max_ep = 999
 update_frequency = 5
 
 init = tf.initialize_all_variables()
+
+def smooth(list, a = 0.05):
+    new_list = []
+    v = list[0]
+    for item in list:
+        v = v*(1-a) + a*item
+        new_list.append(v)
+    return new_list
 
 # Launch the tensorflow graph
 with tf.Session() as sess:
     sess.run(init)
     i = 0
     total_reward = []
-    total_lenght = []
+    total_length = []
         
     gradBuffer = sess.run(tf.trainable_variables())
     for ix,grad in enumerate(gradBuffer):
@@ -102,7 +110,7 @@ with tf.Session() as sess:
                         gradBuffer[ix] = grad * 0
                 
                 total_reward.append(running_reward)
-                total_lenght.append(j)
+                total_length.append(j)
                 break
 
         
@@ -110,5 +118,8 @@ with tf.Session() as sess:
         if i % 100 == 0:
             print(np.mean(total_reward[-100:]))
         i += 1
-    plt.plot(total_reward)
-    plt.plot(total_lenght)
+    plt.plot(smooth(total_reward))
+    plt.title("Smoothed Score per Epoch Reinforcement Policy Network on CartPole enviroment")
+    plt.xlabel("Epoch")
+    plt.ylabel("Score (max=200)")
+    plt.show("hold")
