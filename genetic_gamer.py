@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
-    game = "walk"
+    game = "ice"
     if len(sys.argv) < 2:
         pass
     elif sys.argv[1] == "ice":
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         OUTPUT_SIZE = 4
         HIDDENS = [10, 10]
         GOAL_STEPS = 500
-        GENERATIONS = 100
+        GENERATIONS = 20000
         env = gym.make('BipedalWalker-v2')
         env.reset()
         population = genetic.get_initial_population(POPULATION_SIZE, INPUT_SIZE, HIDDENS, OUTPUT_SIZE, net_type=genetic.Genetic_Net_continous)
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         KEEP_PORPORTION = 0.25
         INPUT_SIZE = 16
         OUTPUT_SIZE = 4
-        HIDDENS = [50]
+        HIDDENS = [10]
         GOAL_STEPS = 500
         GENERATIONS = 1000
         env = gym.make('FrozenLake-v0')
